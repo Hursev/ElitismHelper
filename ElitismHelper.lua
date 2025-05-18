@@ -1,3 +1,4 @@
+local addonName, addonTable = ...;
 local Users = {}
 local Timers = {}
 local TimerData = {}
@@ -1745,6 +1746,11 @@ local function maybeSendChatMessage(message)
 	end
 end
 
+-- Hursev
+function addonTable.EH_maybeSendChatMessage(message)
+	maybeSendChatMessage(message)
+end
+
 local function delayMaybeSendChatMessage(message, delay)
 	C_Timer.After(
 		delay,
@@ -1925,7 +1931,7 @@ SlashCmdList["ELITISMHELPER"] = function(msg,editBox)
 				ElitismHelperDB.OutputMode = "self"
 				print("Output set to self only always")
 			else
-				print("Valid targets are default | party | raid | yell | emote | channel | self")
+				print("Valid targets are default | party | raid | yell | emote | channel # | self")
 				print("Current target is "..ElitismHelperDB.OutputMode)
 			end
 			ElitismFrame:RebuildTable()
@@ -1936,7 +1942,7 @@ SlashCmdList["ELITISMHELPER"] = function(msg,editBox)
 			print(" off/disable: Disable Elitism Helper announcer")
 			print(" eodon: Enable Elitism Helper end-of-dungeon stats")
 			print(" eodoff: Disable Elitism Helper end-of-dungeon stats")
-			print(" output: Define output channel between default | party | raid | yell | self")
+			print(" output: Define output channel between default | party | raid | yell | emote | channel # | self")
 			print(" ------ This is more or less for debugging ------")
 			print(" start: Start logging avoidable damage")
 			print(" eod: Dungeon is complete")
@@ -2005,6 +2011,14 @@ SlashCmdList["ELITISMHELPER"] = function(msg,editBox)
 		commandFunction = actions["help"]
 	end
 	commandFunction(args)
+
+	if (commandFunction == actions["help"]) then
+		-- GUI
+		Settings.OpenToCategory(addonTable.settingsCategory.ID)
+	end
+
+	-- GUI
+	addonTable.UIPanel:refreshValues();
 end
 
 function ElitismFrame:RebuildTable()

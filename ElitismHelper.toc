@@ -5,3 +5,4 @@
 ## SavedVariables: ElitismHelperDB
 
 ElitismHelper.lua
+ElitismHelperGUI.lua
